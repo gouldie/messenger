@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
-import {Platform, StyleSheet, Text, View} from 'react-native'
+import React, { Component } from 'react'
+import { Platform, StyleSheet, Text, View } from 'react-native'
 
 import { ApolloClient } from 'apollo-client'
 import { ApolloLink } from 'apollo-link'
@@ -40,7 +40,7 @@ export const client = new ApolloClient({
 })
 
 export default class App extends Component {
-  render() {
+  render () {
     return (
       <ApolloProvider client={client}>
         <Provider store={store}>
@@ -58,6 +58,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#F5FCFF'
   }
 })
