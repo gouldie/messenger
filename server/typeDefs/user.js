@@ -14,6 +14,10 @@ const User = gql`
   extend type Query {
     me: User
   }
+
+  extend type Mutation {
+    signUp(username: String!, password: String!): User
+  }
 `
 
 export default User

@@ -11,7 +11,8 @@ const messageSchema = new Schema({
     ref: 'Chat'
   }
 }, {
-  timestamps: true
+  timestamps: true,
+  versionKey: false
 })
 
 const Message = mongoose.model('Message', messageSchema)

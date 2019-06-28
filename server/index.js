@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import express from 'express'
 import session from 'express-session'
 import typeDefs from './typeDefs'
+import resolvers from './resolvers'
 
 require('dotenv').config()
 
@@ -31,7 +32,13 @@ const MongoStore = require('connect-mongo')(session);
 
     const server = new ApolloServer({
       typeDefs,
-      mocks: true
+      resolvers,
+      playground: {
+        settings: {
+          'request.credentials': 'include'
+        }
+      },
+      context: ({ req, res }) => ({ req, res })
     })
 
     server.applyMiddleware({ app, cors: false })
