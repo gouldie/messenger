@@ -10,6 +10,10 @@ const User = gql`
     createdAt: String!
     updatedAt: String!
   }
+
+  extend type Query {
+    me: User
+  }
 `
 
 export default User

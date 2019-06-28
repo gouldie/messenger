@@ -1,7 +1,7 @@
 import { gql } from 'apollo-server'
 
 const chat = gql`
-  extend type Chat {
+  type Chat {
     id: ID!
     title: String!
     users: [User!]!

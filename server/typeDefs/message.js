@@ -1,7 +1,7 @@
 import { gql } from 'apollo-server'
 
 const message = gql`
-  extend type Message {
+  type Message {
     id: ID!
     sender: String!,
     body: String!,
