@@ -17,6 +17,7 @@ const User = gql`
 
   extend type Mutation {
     signUp(username: String!, password: String!): User
+    signIn(username: String!, password: String!): User
     signOut: Boolean
   }
 `
