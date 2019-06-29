@@ -4,9 +4,11 @@ import express from 'express'
 import session from 'express-session'
 import typeDefs from './typeDefs'
 import resolvers from './resolvers'
+import schemaDirectives from './directives'
 
 require('dotenv').config()
 
+const IN_PROD = process.env.NODE_ENV === 'production'
 const MongoStore = require('connect-mongo')(session);
 
 (async () => {
@@ -33,7 +35,8 @@ const MongoStore = require('connect-mongo')(session);
     const server = new ApolloServer({
       typeDefs,
       resolvers,
-      playground: {
+      schemaDirectives,
+      playground: IN_PROD ? false : {
         settings: {
           'request.credentials': 'include'
         }

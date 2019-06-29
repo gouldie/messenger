@@ -7,3 +7,9 @@ export const ensureSignedIn = req => {
     throw new AuthenticationError('You must be signed in.')
   }
 }
+
+export const ensureSignedOut = req => {
+  if (signedIn(req)) {
+    throw new AuthenticationError('You are already signed in.')
+  }
+}
