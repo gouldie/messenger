@@ -1,4 +1,5 @@
 import { User } from '../models'
+import { signOut } from '../auth'
 
 export default {
   Query: {
@@ -15,6 +16,9 @@ export default {
       req.session.userId = user.id
 
       return user
+    },
+    signOut: async (root, args, { req, res }, info) => {
+      return signOut(req, res)
     }
   }
 }
