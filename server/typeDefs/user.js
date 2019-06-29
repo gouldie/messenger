@@ -12,13 +12,13 @@ const User = gql`
   }
 
   extend type Query {
-    me: User
+    me: User @auth
   }
 
   extend type Mutation {
-    signUp(username: String!, password: String!): User
-    signIn(username: String!, password: String!): User
-    signOut: Boolean
+    signUp(username: String!, password: String!): User @guest
+    signIn(username: String!, password: String!): User @guest
+    signOut: Boolean @auth
   }
 `
 
