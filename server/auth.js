@@ -36,3 +36,7 @@ export const signOut = (req, res) => new Promise((resolve, reject) => {
     resolve(true)
   })
 })
+
+export const isAuth = (req, user) => {
+  return req.session.userId === user.id
+}

@@ -1,5 +1,5 @@
 import { User } from '../models'
-import { signOut, attemptSignIn } from '../auth'
+import { signOut, attemptSignIn, isAuth } from '../auth'
 
 export default {
   Query: {
@@ -31,8 +31,12 @@ export default {
     }
   },
   User: {
-    chats: async (user, args, context, info) => {
-      return (await user.populate('chats').execPopulate()).chats
+    chats: async (user, args, { req }, info) => {
+      if (isAuth(req, user)) {
+        return (await user.populate('chats').execPopulate()).chats
+      }
+
+      return []
     }
   }
 }
