@@ -29,5 +29,10 @@ export default {
     signOut: async (root, args, { req, res }, info) => {
       return signOut(req, res)
     }
+  },
+  User: {
+    chats: async (user, args, context, info) => {
+      return (await user.populate('chats').execPopulate()).chats
+    }
   }
 }
