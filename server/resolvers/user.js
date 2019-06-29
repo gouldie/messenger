@@ -1,5 +1,7 @@
 import { User } from '../models'
 import { signOut, attemptSignIn, isAuth } from '../auth'
+import Joi from 'joi'
+import { signUp, signIn } from '../schema'
 
 export default {
   Query: {
@@ -9,7 +11,7 @@ export default {
   },
   Mutation: {
     signUp: async (root, args, { req }, info) => {
-      // TODO: joi validation
+      await Joi.validate(args, signUp, { abortEarly: false })
 
       const user = await User.create(args)
 
@@ -18,7 +20,7 @@ export default {
       return user
     },
     signIn: async (root, args, { req }, info) => {
-      // TODO: joi validation
+      await Joi.validate(args, signIn, { abortEarly: false })
 
       const user = await attemptSignIn(args.username, args.password)
 
