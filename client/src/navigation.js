@@ -3,6 +3,7 @@ import React from 'react'
 import { createBottomTabNavigator, createAppContainer, createStackNavigator } from 'react-navigation'
 import { Text, View, StyleSheet } from 'react-native'
 import Chats from './screens/chats'
+import Chat from './screens/chat'
 
 const styles = StyleSheet.create({
   container: {
@@ -37,7 +38,8 @@ const TabNavigator = createBottomTabNavigator({
 
 // Stack Navigator
 const StackNavigator = createStackNavigator({
-  Main: { screen: TabNavigator }
+  Main: { screen: TabNavigator },
+  Chat: { screen: Chat }
 })
 
 export default createAppContainer(StackNavigator)

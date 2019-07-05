@@ -49,7 +49,7 @@ class Message extends PureComponent {
         {isCurrentUser ? <View style={styles.messageSpacer} /> : undefined }
         <View style={[styles.message, isCurrentUser && styles.myMessage]}>
           <Text style={[styles.messageUsername, { color }]}>
-            {message.from.username}
+            {message.from}
           </Text>
           <Text>{message.text}</Text>
           <Text>{moment(message.createdAt).format('h:mm A')}</Text>
@@ -64,7 +64,8 @@ Message.propTypes = {
   color: PropTypes.string.isRequired,
   message: PropTypes.shape({
     createdAt: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired
+    text: PropTypes.string.isRequired,
+    from: PropTypes.string.isRequired
   }),
   isCurrentUser: PropTypes.bool.isRequired
 }

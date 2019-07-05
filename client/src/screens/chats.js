@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 })
 
 // fake chat data
-const fakeData = () => _.times(100, i => ({
+const fakeData = () => _.times(5, i => ({
   id: i,
   name: `Chat ${i}`
 }))
@@ -41,7 +41,7 @@ class Chat extends Component {
     const { id, name } = this.props.chat
 
     return (
-      <TouchableHighlight key={id}>
+      <TouchableHighlight key={id} onPress={this.props.goToChat}>
         <View style={styles.chatContainer}>
           <Text style={styles.chatName}>
             {name}
@@ -53,6 +53,7 @@ class Chat extends Component {
 }
 
 Chat.propTypes = {
+  goToChat: PropTypes.func.isRequired,
   chat: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string
@@ -60,9 +61,13 @@ Chat.propTypes = {
 }
 
 class Chats extends Component {
-  renderItem = ({ item }) => <Chat chat={item} />
+  renderItem = ({ item }) => <Chat chat={item} goToChat={this.goToChat} />
   
   keyExtractor = item => item.id.toString()
+
+  goToChat = (chat) => {
+    this.props.navigation.navigate('Chat', { chatId: chat.id, title: chat.name })
+  }
   
   render() {
     return (
