@@ -10,6 +10,10 @@ const chat = gql`
     createdAt: String!
     updatedAt: String!
   }
+
+  extend type Mutation {
+    startChat(title: String, userIds: [ID!]!): ID @auth
+  }
 `
 
 export default chat
