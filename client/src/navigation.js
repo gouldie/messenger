@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
-import { createBottomTabNavigator, createAppContainer } from 'react-navigation'
+import { createBottomTabNavigator, createAppContainer, createStackNavigator } from 'react-navigation'
 import { Text, View, StyleSheet } from 'react-native'
+import Chats from './screens/chats'
 
 const styles = StyleSheet.create({
   container: {
@@ -30,8 +31,13 @@ const TestScreen = title => () => (
 
 // Tab Navigator
 const TabNavigator = createBottomTabNavigator({
-  Chats: { screen: TestScreen('Chats') },
+  Chats: { screen: Chats },
   Settings: { screen: TestScreen('Settings') }
 })
 
-export default createAppContainer(TabNavigator)
+// Stack Navigator
+const StackNavigator = createStackNavigator({
+  Main: { screen: TabNavigator }
+})
+
+export default createAppContainer(StackNavigator)
