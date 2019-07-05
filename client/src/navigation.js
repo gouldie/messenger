@@ -1,11 +1,6 @@
-import PropTypes from 'prop-types'
-import React, { Component } from 'react'
-import { NavigationActions, StackActions, addNavigationHelpers, createStackNavigator, createBottomTabNavigator } from 'react-navigation'
-import {
-  createReduxContainer,
-  createReactNavigationReduxMiddleware
-} from 'react-navigation-redux-helpers'
-import { connect } from 'react-redux'
+/* eslint-disable no-unused-vars */
+import React from 'react'
+import { createBottomTabNavigator, createAppContainer } from 'react-navigation'
 import { Text, View, StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
@@ -34,54 +29,9 @@ const TestScreen = title => () => (
 )
 
 // Tab Navigator
-const TabNav = createBottomTabNavigator({
+const TabNavigator = createBottomTabNavigator({
   Chats: { screen: TestScreen('Chats') },
   Settings: { screen: TestScreen('Settings') }
-}, {
-  initialRouteName: 'Chats'
 })
 
-// Stack Navigator
-const StackNav = createStackNavigator({
-  Main: { screen: TabNav }
-})
-
-// Reducer
-const initialState = StackNav.router.getStateForAction(StackActions.reset({
-  index: 0,
-  actions: [
-    NavigationActions.navigate({
-      routeName: 'Main'
-    })
-  ]
-}))
-
-export const navigationReducer = (state = initialState, action) => {
-  const nextState = StackNav.router.getStateForAction(action, state)
-
-  return nextState || state
-}
-
-export const navigationMiddleware = createReactNavigationReduxMiddleware(
-  'root',
-  state => state.nav
-)
-const addListener = createReduxContainer('root')
-
-class Navigator extends Component {
-  render () {
-    return (
-      <StackNav navigation={addNavigationHelpers({
-        dispatch: this.props.dispatch,
-        state: this.props.nav,
-        addListener
-      })} />
-    )
-  }
-}
-
-const mapStateToProps = state => ({
-  nav: state.nav
-})
-
-export default connect(mapStateToProps)(Navigator)
+export default createAppContainer(TabNavigator)
