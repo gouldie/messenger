@@ -1,25 +1,28 @@
 import React, { Component } from 'react'
-import { Platform, StyleSheet, Text, View } from 'react-native'
-
 import { ApolloClient } from 'apollo-client'
 import { ApolloLink } from 'apollo-link'
 import { ApolloProvider } from 'react-apollo'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { createHttpLink } from 'apollo-link-http'
-import { createStore, combineReducers } from 'redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import { ReduxCache, apolloReducer } from 'apollo-cache-redux'
 import ReduxLink from 'apollo-link-redux'
 import { onError } from 'apollo-link-error'
+import AppWithNavigationState, { navigationReducer, navigationMiddleware } from './navigation'
+import { Text, View } from 'react-native'
 
 const URL = 'localhost:8080'
 
 const store = createStore(
   combineReducers({
-    apollo: apolloReducer
+    apollo: apolloReducer,
+    nav: navigationReducer
   }),
-  {},
-  composeWithDevTools()
+  {}, // initial state
+  composeWithDevTools(
+    applyMiddleware(navigationMiddleware)
+  )
 )
 
 const cache = new ReduxCache({ store })
@@ -44,7 +47,7 @@ export default class App extends Component {
     return (
       <ApolloProvider client={client}>
         <Provider store={store}>
-          <View style={styles.container}>
+          <View>
             <Text>app js</Text>
           </View>
         </Provider>
@@ -52,12 +55,3 @@ export default class App extends Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF'
-  }
-})
