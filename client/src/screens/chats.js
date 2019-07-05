@@ -36,12 +36,12 @@ const fakeData = () => _.times(5, i => ({
   name: `Chat ${i}`
 }))
 
-class Chat extends Component {
+class ChatItem extends Component {
   render () {
     const { id, name } = this.props.chat
 
     return (
-      <TouchableHighlight key={id} onPress={this.props.goToChat}>
+      <TouchableHighlight key={id} onPress={() => this.props.goToChat(this.props.chat)}>
         <View style={styles.chatContainer}>
           <Text style={styles.chatName}>
             {name}
@@ -52,7 +52,7 @@ class Chat extends Component {
   }
 }
 
-Chat.propTypes = {
+ChatItem.propTypes = {
   goToChat: PropTypes.func.isRequired,
   chat: PropTypes.shape({
     id: PropTypes.number,
@@ -61,7 +61,7 @@ Chat.propTypes = {
 }
 
 class Chats extends Component {
-  renderItem = ({ item }) => <Chat chat={item} goToChat={this.goToChat} />
+  renderItem = ({ item }) => <ChatItem chat={item} goToChat={this.goToChat} />
   
   keyExtractor = item => item.id.toString()
 
