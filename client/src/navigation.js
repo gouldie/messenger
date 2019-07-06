@@ -5,6 +5,7 @@ import { Text, View, StyleSheet } from 'react-native'
 import Chats from './screens/chats'
 import Messages from './screens/messages'
 import AuthLoading from './screens/authLoading'
+import SignIn from './screens/signIn'
 
 const styles = StyleSheet.create({
   container: {
@@ -45,7 +46,7 @@ const AppStack = createStackNavigator({
 
 // Auth Navigator
 const AuthStack = createStackNavigator({
-  SignIn: { screen: TestScreen('SignIn') }
+  SignIn: { screen: SignIn }
 })
 
 export default createAppContainer(createSwitchNavigator(
