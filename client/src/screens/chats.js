@@ -66,7 +66,7 @@ class Chats extends Component {
   keyExtractor = item => item.id.toString()
 
   goToChat = (chat) => {
-    this.props.navigation.navigate('Chat', { chatId: chat.id, title: chat.name })
+    this.props.navigation.navigate('Messages', { chatId: chat.id, title: chat.name })
   }
   
   render() {

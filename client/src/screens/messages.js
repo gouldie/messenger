@@ -30,7 +30,7 @@ const fakeData = () => _.times(5, i => ({
   }
 }))
 
-class Chat extends Component {
+class Messages extends Component {
   keyExtractor = item => item.message.id.toString()
 
   renderItem = ({ item: { isCurrentUser, message, color } }) => (
@@ -54,4 +54,4 @@ class Chat extends Component {
   }
 }
 
-export default Chat
+export default Messages
