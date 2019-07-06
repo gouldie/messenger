@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
-import { createBottomTabNavigator, createAppContainer, createStackNavigator } from 'react-navigation'
+import { createBottomTabNavigator, createAppContainer, createStackNavigator, createSwitchNavigator } from 'react-navigation'
 import { Text, View, StyleSheet } from 'react-native'
 import Chats from './screens/chats'
 import Messages from './screens/messages'
+import AuthLoading from './screens/authLoading'
 
 const styles = StyleSheet.create({
   container: {
@@ -36,10 +37,24 @@ const TabNavigator = createBottomTabNavigator({
   Settings: { screen: TestScreen('Settings') }
 })
 
-// Stack Navigator
-const StackNavigator = createStackNavigator({
+// App Navigator
+const AppStack = createStackNavigator({
   Main: { screen: TabNavigator },
   Messages: { screen: Messages }
 })
 
-export default createAppContainer(StackNavigator)
+// Auth Navigator
+const AuthStack = createStackNavigator({
+  SignIn: { screen: TestScreen('SignIn') }
+})
+
+export default createAppContainer(createSwitchNavigator(
+  {
+    AuthLoading,
+    App: AppStack,
+    Auth: AuthStack
+  },
+  {
+    initialRouteName: 'AuthLoading'
+  }
+))
