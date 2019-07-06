@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React, { Component } from 'react'
 import { Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { SIGN_IN } from '../graphql/user'
+import { graphql } from 'react-apollo'
 
 const styles = StyleSheet.create({
   container: {
@@ -33,6 +35,35 @@ const styles = StyleSheet.create({
 })
 
 class SignIn extends Component {
+  constructor () {
+    super()
+
+    this.state = {
+      username: null,
+      password: null
+    }
+  }
+
+  onChangeUsername = (e) => {
+    this.setState({ username: e })
+  }
+
+  onChangePassword = (e) => {
+    this.setState({ password: e })
+  }
+
+  login = () => {
+    this.props.mutate({
+      variables: { username: this.state.username, password: this.state.password }
+    })
+    .then(res => {
+      console.log('res', res)
+    })
+    .catch(err => {
+      console.log('err', err)
+    })
+  }
+
   render () {
     return (
       <View style={styles.container}>
@@ -45,6 +76,8 @@ class SignIn extends Component {
           placeholder="Username"
           placeholderTextColor="black"
           autoCapitalize="none"
+          onChangeText={this.onChangeUsername}
+          value={this.state.username}
         />
         <TextInput
           style={styles.input}
@@ -53,10 +86,12 @@ class SignIn extends Component {
           placeholderTextColor="black"
           autoCapitalize="none"
           secureTextEntry={true}
+          onChangeText={this.onChangePassword}
+          value={this.state.password}
         />
         <TouchableOpacity
           style={styles.submitButton}
-          onPress={() => this.login(this.state.email, this.state.password)}
+          onPress={this.login}
         >
           <Text style={styles.submitButtonText}>Submit</Text>
         </TouchableOpacity>
@@ -65,4 +100,4 @@ class SignIn extends Component {
   }
 }
 
-export default SignIn
+export default graphql(SIGN_IN)(SignIn)

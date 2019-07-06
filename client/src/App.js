@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { ApolloClient } from 'apollo-client'
 import { ApolloLink } from 'apollo-link'
-import { ApolloProvider } from 'react-apollo'
+import { ApolloProvider, createNetworkIntereface } from 'react-apollo'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { createHttpLink } from 'apollo-link-http'
 import { createStore, combineReducers } from 'redux'
@@ -26,7 +26,7 @@ const reduxLink = new ReduxLink(store)
 const errorLink = onError(errors => {
   console.log(errors)
 })
-const httpLink = createHttpLink({ uri: `http://${URL}` })
+const httpLink = createHttpLink({ uri: `http://${URL}/graphql` })
 const link = ApolloLink.from([
   reduxLink,
   errorLink,
