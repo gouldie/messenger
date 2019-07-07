@@ -31,6 +31,10 @@ const styles = StyleSheet.create({
   },
   submitButtonText: {
     color: 'white'
+  },
+  errorText: {
+    paddingHorizontal: 15,
+    color: 'red'
   }
 })
 
@@ -40,7 +44,8 @@ class SignIn extends Component {
 
     this.state = {
       username: null,
-      password: null
+      password: null,
+      errors: []
     }
   }
 
@@ -60,11 +65,14 @@ class SignIn extends Component {
       console.log('res', res)
     })
     .catch(err => {
-      console.log('err', err)
+      const errors = err.graphQLErrors.map(error => error.message)
+      this.setState({ errors })
     })
   }
 
   render () {
+    const { errors } = this.state
+
     return (
       <View style={styles.container}>
         <Text style={styles.title}>
@@ -95,6 +103,7 @@ class SignIn extends Component {
         >
           <Text style={styles.submitButtonText}>Submit</Text>
         </TouchableOpacity>
+        <Text style={styles.errorText}>{errors[0]}</Text>
       </View>
     )
   }

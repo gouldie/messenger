@@ -6,6 +6,7 @@ import { signUp, signIn } from '../schema'
 export default {
   Query: {
     me: (root, args, { req }, info) => {
+      console.log('me')
       return User.findById(req.session.userId)
     }
   },

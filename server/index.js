@@ -32,6 +32,16 @@ const MongoStore = require('connect-mongo')(session);
       })
     )
 
+    // Error handler
+    const errorHandler = (err, req, res, next) => {
+      if (res.headersSent) {
+        return next(err)
+      }
+      const { status } = err
+      res.status(status).json(err)
+    }
+    app.use(errorHandler)
+
     const server = new ApolloServer({
       typeDefs,
       resolvers,
@@ -44,7 +54,7 @@ const MongoStore = require('connect-mongo')(session);
       context: ({ req, res }) => ({ req, res })
     })
 
-    server.applyMiddleware({ app, cors: false })
+    server.applyMiddleware({ app, cors: true })
 
     app.listen({ port: process.env.PORT || 8080 }, () => {
       console.log(`Server listening at port ${process.env.PORT || 8080}`)
