@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { SIGN_IN } from '../graphql/user'
 import { graphql } from 'react-apollo'
+import AsyncStorage from '@react-native-community/async-storage'
 
 const styles = StyleSheet.create({
   container: {
@@ -62,9 +63,10 @@ class SignIn extends Component {
       variables: { username: this.state.username, password: this.state.password }
     })
     .then(res => {
-      console.log('res', res)
+      this.props.navigation.navigate('AuthLoading')
     })
     .catch(err => {
+      console.log('err', err)
       const errors = err.graphQLErrors.map(error => error.message)
       this.setState({ errors })
     })

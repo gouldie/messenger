@@ -3,9 +3,12 @@ import { _ } from 'lodash'
 import {
   FlatList,
   StyleSheet,
-  View
+  View,
+  TouchableOpacity,
+  Text
 } from 'react-native'
 import ChatItem from '../components/chatItem'
+import AsyncStorage from '@react-native-community/async-storage'
 
 const styles = StyleSheet.create({
   container: {
@@ -29,6 +32,11 @@ class Chats extends Component {
   goToChat = (chat) => {
     this.props.navigation.navigate('Messages', { chatId: chat.id, title: chat.name })
   }
+
+  signOut = async () => {
+    await AsyncStorage.removeItem('cookie')
+    this.props.navigation.navigate('AuthLoading')
+  }
   
   render() {
     return (
@@ -38,6 +46,12 @@ class Chats extends Component {
           keyExtractor={this.keyExtractor}
           renderItem={this.renderItem}
         />
+        <TouchableOpacity
+          style={styles.submitButton}
+          onPress={this.signOut}
+        >
+          <Text style={styles.submitButtonText}>Sign out</Text>
+        </TouchableOpacity>
       </View>
     )
   }
