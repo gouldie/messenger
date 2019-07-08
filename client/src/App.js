@@ -6,7 +6,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import { createHttpLink } from 'apollo-link-http'
 import { createStore, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
-import { ReduxCache, apolloReducer } from 'apollo-cache-redux'
+import { InMemoryCache } from 'apollo-cache-inmemory'
 import ReduxLink from 'apollo-link-redux'
 import { onError } from 'apollo-link-error'
 import Navigator from './navigation'
@@ -15,15 +15,22 @@ import { setContext } from 'apollo-link-context'
 
 const URL = 'localhost:8080'
 
+function testReducer (state = {}, action) {
+  switch (action.type) {
+    default:
+      return state
+  }
+}
+
 const store = createStore(
   combineReducers({
-    apollo: apolloReducer
+    test: testReducer
   }),
   {}, // initial state
   composeWithDevTools()
 )
 
-const cache = new ReduxCache({ store })
+const cache = new InMemoryCache()
 
 const asyncAuthLink = setContext(async request => {
   const cookie = await AsyncStorage.getItem('cookie')

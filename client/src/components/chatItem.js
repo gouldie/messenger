@@ -27,13 +27,13 @@ const styles = StyleSheet.create({
 
 class ChatItem extends Component {
   render () {
-    const { id, name } = this.props.chat
+    const { id, title } = this.props.chat
 
     return (
       <TouchableHighlight key={id} onPress={() => this.props.goToChat(this.props.chat)}>
         <View style={styles.chatContainer}>
           <Text style={styles.chatName}>
-            {name}
+            {title}
           </Text>
         </View>
       </TouchableHighlight>
@@ -44,8 +44,8 @@ class ChatItem extends Component {
 ChatItem.propTypes = {
   goToChat: PropTypes.func.isRequired,
   chat: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string
+    id: PropTypes.string,
+    title: PropTypes.string
   })
 }
 

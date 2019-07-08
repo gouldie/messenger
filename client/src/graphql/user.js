@@ -13,3 +13,11 @@ export const SIGN_OUT = gql`
     signOut
   }
 `
+
+export const MY_CHATS = gql`
+  query {
+    me {
+      id
+    }
+  }
+`
