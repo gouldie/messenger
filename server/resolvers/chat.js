@@ -9,7 +9,8 @@ export default {
       const { userId } = req.session
       const { title, userIds } = args
 
-      await Joi.validate(args, startChat, { abortEarly: false })
+      await Joi.validate(args, startChat(userId), { abortEarly: false })
+      console.log('aft')
 
       const idsFound = await User.where('_id').in(userIds).countDocuments()
 
@@ -23,7 +24,7 @@ export default {
 
       await User.updateMany({ _id: { $in: userIds } }, { $push: { chats: chat } })
 
-      return chat
+      return chat.id
     }
   }
 }
