@@ -28,6 +28,10 @@ const fakeData = () => _.times(5, i => ({
 }))
 
 class Messages extends Component {
+  static navigationOptions = {
+    title: 'Messages'
+  }
+
   keyExtractor = item => item.message.id.toString()
 
   renderItem = ({ item: { isCurrentUser, message, color } }) => (

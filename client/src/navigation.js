@@ -32,16 +32,11 @@ const TestScreen = title => () => (
   </View>
 )
 
-// Tab Navigator
-const TabNavigator = createBottomTabNavigator({
-  Chats: { screen: Chats },
-  Settings: { screen: TestScreen('Settings') }
-})
-
 // App Navigator - each of these screens should have a didMount auth check
 const AppStack = createStackNavigator({
-  Main: { screen: TabNavigator },
-  Messages: { screen: Messages }
+  Chats: { screen: Chats },
+  Messages: { screen: Messages },
+  Settings: { screen: TestScreen('Settings') }
 })
 
 // Auth Navigator

@@ -12,7 +12,6 @@ import ChatItem from '../components/chatItem'
 import AsyncStorage from '@react-native-community/async-storage'
 import { graphql, compose } from 'react-apollo'
 import { SIGN_OUT, MY_CHATS } from '../graphql/user'
-import gql from 'graphql-tag'
 
 const styles = StyleSheet.create({
   container: {
@@ -34,6 +33,10 @@ const fakeData = () => _.times(5, i => ({
 
 
 class Chats extends Component {
+  static navigationOptions = {
+    title: 'Chats'
+  }
+
   renderItem = ({ item }) => <ChatItem chat={item} goToChat={this.goToChat} />
   
   keyExtractor = item => item.id.toString()
