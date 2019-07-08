@@ -43,6 +43,8 @@ const afterwareLink = new ApolloLink((operation, forward) =>
 
     if (headers.map['set-cookie']) {
       AsyncStorage.setItem('cookie', headers.map['set-cookie']) // TODO: this works, but should be async
+    } else {
+      AsyncStorage.removeItem('cookie')
     }
     return response
   })
