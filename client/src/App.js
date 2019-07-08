@@ -34,7 +34,7 @@ const cache = new InMemoryCache()
 
 const asyncAuthLink = setContext(async request => {
   const cookie = await AsyncStorage.getItem('cookie')
-  console.log('cookie', cookie)
+
   return {
     headers: {
       cookie
@@ -44,7 +44,6 @@ const asyncAuthLink = setContext(async request => {
 
 const afterwareLink = new ApolloLink((operation, forward) =>
   forward(operation).map(response => {
-    console.log('a')
     const context = operation.getContext()
     const { response: { headers } } = context
 

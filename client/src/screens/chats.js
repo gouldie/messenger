@@ -42,24 +42,20 @@ class Chats extends Component {
     this.props.navigation.navigate('Messages', { chatId: chat.id, title: chat.name })
   }
 
-  signOut = async () => {
-    await AsyncStorage.removeItem('cookie')
+  signOut = () => {
     this.props.signOut()
-      .then(res => {
+      .then(async res => {
+        await AsyncStorage.removeItem('cookie')
         this.props.navigation.navigate('AuthLoading')
       })
-      .catch(err => {
+      .catch(async err => {
+        await AsyncStorage.removeItem('cookie')
         this.props.navigation.navigate('AuthLoading')
       })
   }
   
   render() {
     const { data: { loading, me } } = this.props
-    console.log('chats', me && me.chats)
-
-    // if (loading) {
-    //   return <ActivityIndicator />
-    // }
 
     return (
       <View style={styles.container}>
@@ -89,27 +85,15 @@ class Chats extends Component {
   }
 }
 
-// const signOutQuery = graphql(SIGN_OUT, {
-//   props: ({ ownProps, mutate }) => ({
-//     signOut: () => mutate()
-//   })
-// })
+const signOutQuery = graphql(SIGN_OUT, {
+  props: ({ ownProps, mutate }) => ({
+    signOut: () => mutate()
+  })
+})
 
-// const myChats = graphql(MY_CHATS)
+const myChats = graphql(MY_CHATS)
 
-// export default compose(
-//   signOutQuery,
-//   myChats
-// )(Chats)
-
-export default graphql(gql`
-  query {
-    me {
-      chats {
-        id
-        title
-        createdAt
-      }
-    }
-  }
-`)(Chats)
+export default compose(
+  signOutQuery,
+  myChats
+)(Chats)

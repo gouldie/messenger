@@ -17,7 +17,11 @@ export const SIGN_OUT = gql`
 export const MY_CHATS = gql`
   query {
     me {
-      id
+      chats {
+        id
+        title
+        createdAt
+      }
     }
   }
 `
