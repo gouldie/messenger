@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { ApolloClient } from 'apollo-client'
 import { ApolloLink } from 'apollo-link'
-import { ApolloProvider, createNetworkIntereface } from 'react-apollo'
+import { ApolloProvider } from 'react-apollo'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { createHttpLink } from 'apollo-link-http'
 import { createStore, combineReducers } from 'redux'
@@ -25,13 +25,24 @@ const store = createStore(
 
 const cache = new ReduxCache({ store })
 
+const asyncAuthLink = setContext(async request => {
+  const cookie = await AsyncStorage.getItem('cookie')
+  console.log('cookie', cookie)
+  return {
+    headers: {
+      cookie
+    }
+  }
+})
+
 const afterwareLink = new ApolloLink((operation, forward) =>
   forward(operation).map(response => {
+    console.log('a')
     const context = operation.getContext()
     const { response: { headers } } = context
 
     if (headers.map['set-cookie']) {
-      AsyncStorage.setItem('cookie', headers.map['set-cookie'])
+      AsyncStorage.setItem('cookie', headers.map['set-cookie']) // TODO: this works, but should be async
     }
     return response
   })
@@ -43,6 +54,7 @@ const errorLink = onError(errors => {
 })
 const httpLink = createHttpLink({ uri: `http://${URL}/graphql` })
 const link = ApolloLink.from([
+  asyncAuthLink,
   reduxLink,
   errorLink,
   afterwareLink,

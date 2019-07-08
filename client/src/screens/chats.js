@@ -9,6 +9,8 @@ import {
 } from 'react-native'
 import ChatItem from '../components/chatItem'
 import AsyncStorage from '@react-native-community/async-storage'
+import { graphql, compose } from 'react-apollo'
+import { SIGN_OUT, SIGN_IN } from '../graphql/user'
 
 const styles = StyleSheet.create({
   container: {
@@ -35,10 +37,18 @@ class Chats extends Component {
 
   signOut = async () => {
     await AsyncStorage.removeItem('cookie')
-    this.props.navigation.navigate('AuthLoading')
+    this.props.signOut()
+      .then(res => {
+        this.props.navigation.navigate('AuthLoading')
+      })
+      .catch(err => {
+        this.props.navigation.navigate('AuthLoading')
+      })
   }
   
   render() {
+    console.log('asdasd', this.props)
+
     return (
       <View style={styles.container}>
         <FlatList 
@@ -57,4 +67,12 @@ class Chats extends Component {
   }
 }
 
-export default Chats
+const signOutQuery = graphql(SIGN_OUT, {
+  props: ({ ownProps, mutate }) => ({
+    signOut: () => mutate()
+  })
+})
+
+export default compose(
+  signOutQuery
+)(Chats)
