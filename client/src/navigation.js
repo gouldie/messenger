@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
-import { createBottomTabNavigator, createAppContainer, createStackNavigator, createSwitchNavigator } from 'react-navigation'
-import { Text, View, StyleSheet } from 'react-native'
+import { createBottomTabNavigator, createAppContainer, createStackNavigator,
+  createSwitchNavigator, createDrawerNavigator, createMaterialTopTabNavigator } from 'react-navigation'
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 import Chats from './screens/chats'
 import Messages from './screens/messages'
 import AuthLoading from './screens/authLoading'
@@ -24,19 +25,57 @@ const styles = StyleSheet.create({
   }
 })
 
-const TestScreen = title => () => (
-  <View style={styles.container}>
-    <Text>
-      {title}
-    </Text>
-  </View>
-)
+const TestScreen = title => (props) => {
+  return (
+    <View style={styles.container}>
+      <Text>
+        {title}
+      </Text>
+      <TouchableOpacity
+        onPress={() => props.navigation.navigate('Settings')}
+      >
+        <Text>Settings</Text>
+      </TouchableOpacity>
+    </View>
+  )
+}
 
-// App Navigator - each of these screens should have a didMount auth check
+// const HomeComponent = createBottomTabNavigator({
+//   Chats: { screen: Chats },
+//   Status: { screen: TestScreen('Status') },
+//   Calls: { screen: TestScreen('Calls') }
+// })
+
 const AppStack = createStackNavigator({
-  Chats: { screen: Chats },
+  Home: {
+    screen: createMaterialTopTabNavigator({
+      Home: {
+        screen: Chats,
+        navigationOptions: ({ navigation }) => ({
+          title: 'Chats'
+        })
+      },
+      Status: {
+        screen: TestScreen('Status'),
+        navigationOptions: ({ navigation }) => ({
+          title: 'Status'
+        })
+      },
+      Calls: {
+        screen: TestScreen('Calls'),
+        navigationOptions: ({ navigation }) => ({
+          title: 'Calls'
+        })
+      }
+    }),
+    navigationOptions: ({ navigation }) => ({
+      title: 'WhatsApp'
+    })
+  },
   Messages: { screen: Messages },
-  Settings: { screen: TestScreen('Settings') }
+  Settings: createStackNavigator({
+    Settings: { screen: TestScreen('Settings') }
+  })
 })
 
 // Auth Navigator

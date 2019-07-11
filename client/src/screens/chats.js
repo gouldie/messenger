@@ -34,7 +34,8 @@ const fakeData = () => _.times(5, i => ({
 
 class Chats extends Component {
   static navigationOptions = {
-    title: 'Chats'
+    title: 'Chats',
+    headerRight: <Text>=</Text>
   }
 
   renderItem = ({ item }) => <ChatItem chat={item} goToChat={this.goToChat} />
@@ -46,15 +47,17 @@ class Chats extends Component {
   }
 
   signOut = () => {
-    this.props.signOut()
-      .then(async res => {
-        await AsyncStorage.removeItem('cookie')
-        this.props.navigation.navigate('AuthLoading')
-      })
-      .catch(async err => {
-        await AsyncStorage.removeItem('cookie')
-        this.props.navigation.navigate('AuthLoading')
-      })
+    // this.props.signOut()
+    //   .then(async res => {
+    //     await AsyncStorage.removeItem('cookie')
+    //     this.props.navigation.navigate('AuthLoading')
+    //   })
+    //   .catch(async err => {
+    //     await AsyncStorage.removeItem('cookie')
+    //     this.props.navigation.navigate('AuthLoading')
+    //   })
+    console.log(this.props.navigation)
+    this.props.navigation.toggleDrawer()
   }
   
   render() {
