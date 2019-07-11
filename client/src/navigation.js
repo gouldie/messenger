@@ -2,7 +2,7 @@
 import React from 'react'
 import { createBottomTabNavigator, createAppContainer, createStackNavigator,
   createSwitchNavigator, createDrawerNavigator, createMaterialTopTabNavigator } from 'react-navigation'
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, Button } from 'react-native'
 import Chats from './screens/chats'
 import Messages from './screens/messages'
 import AuthLoading from './screens/authLoading'
@@ -69,7 +69,8 @@ const AppStack = createStackNavigator({
       }
     }),
     navigationOptions: ({ navigation }) => ({
-      title: 'WhatsApp'
+      title: 'WhatsApp',
+      headerRight: <Button title='=' onPress={() => navigation.navigate('Settings')} />
     })
   },
   Messages: { screen: Messages },
