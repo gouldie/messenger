@@ -6,12 +6,16 @@ import {
   View,
   TouchableOpacity,
   Text,
-  ActivityIndicator
+  ActivityIndicator,
+  Animated
 } from 'react-native'
 import ChatItem from '../components/chatItem'
 import AsyncStorage from '@react-native-community/async-storage'
 import { graphql, compose } from 'react-apollo'
 import { SIGN_OUT, MY_CHATS } from '../graphql/user'
+import { withCollapsibleForTabChild } from 'react-navigation-collapsible'
+
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 
 const styles = StyleSheet.create({
   container: {
@@ -26,11 +30,10 @@ const styles = StyleSheet.create({
 })
 
 // fake chat data
-const fakeData = () => _.times(5, i => ({
-  id: i,
-  name: `Chat ${i}`
+const fakeData = () => _.times(50, i => ({
+  id: String(i),
+  title: `Chat ${i}`
 }))
-
 
 class Chats extends Component {
   static navigationOptions = {
@@ -47,46 +50,34 @@ class Chats extends Component {
   }
 
   signOut = () => {
-    // this.props.signOut()
-    //   .then(async res => {
-    //     await AsyncStorage.removeItem('cookie')
-    //     this.props.navigation.navigate('AuthLoading')
-    //   })
-    //   .catch(async err => {
-    //     await AsyncStorage.removeItem('cookie')
-    //     this.props.navigation.navigate('AuthLoading')
-    //   })
-    console.log(this.props.navigation)
-    this.props.navigation.toggleDrawer()
+    this.props.signOut()
+      .then(async res => {
+        await AsyncStorage.removeItem('cookie')
+        this.props.navigation.navigate('AuthLoading')
+      })
+      .catch(async err => {
+        await AsyncStorage.removeItem('cookie')
+        this.props.navigation.navigate('AuthLoading')
+      })
   }
   
   render() {
-    const { data: { loading, me } } = this.props
+    const { data: { loading, me }, collapsible: { onScroll, animatedY } } = this.props
 
     return (
-      <View style={styles.container}>
-        {
-          loading ? 
-          <View style={styles.loaderContainer}>
-            <ActivityIndicator />
-          </View> 
-          : 
-          <View>
-            <FlatList 
-              data={me.chats}
-              keyExtractor={this.keyExtractor}
-              renderItem={this.renderItem}
-            />
-            <TouchableOpacity
-              style={styles.submitButton}
-              onPress={this.signOut}
-            >
-              <Text style={styles.submitButtonText}>Sign out</Text>
-            </TouchableOpacity>
-          </View>
-        }
-        
-      </View>
+      loading ?
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator />
+      </View> 
+      :
+      <AnimatedFlatList 
+        style={{flex: 1}}
+        data={fakeData()}
+        renderItem={this.renderItem}
+        keyExtractor={this.keyExtractor}
+        onScroll={onScroll} 
+        _mustAddThis={animatedY}
+      />
     )
   }
 }
@@ -102,4 +93,4 @@ const myChats = graphql(MY_CHATS)
 export default compose(
   signOutQuery,
   myChats
-)(Chats)
+)(withCollapsibleForTabChild(Chats))

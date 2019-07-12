@@ -7,6 +7,7 @@ import Chats from './screens/chats'
 import Messages from './screens/messages'
 import AuthLoading from './screens/authLoading'
 import SignIn from './screens/signIn'
+import { withCollapsibleForTab } from 'react-navigation-collapsible'
 
 const styles = StyleSheet.create({
   container: {
@@ -25,30 +26,37 @@ const styles = StyleSheet.create({
   }
 })
 
+const navigatorConfig = {
+  defaultNavigationOptions: {
+    headerStyle: { backgroundColor: '#061', borderBottomColor: 'transparent', borderBottomWidth: 0, elevation: 0 },
+    headerTitleStyle: { color: 'white' },
+    headerTintColor: 'white'
+  }
+}
+
+const tabNavigatorConfig = {
+  animationEnabled: true,
+  defaultNavigationOptions: {
+    tabBarOptions: {
+      indicatorStyle: { backgroundColor: 'white' },
+      style: { borderTopColor: 'transparent', borderTopWidth: 0, elevation: 0, backgroundColor: '#061' }
+    }
+  }
+}
+
 const TestScreen = title => (props) => {
   return (
     <View style={styles.container}>
       <Text>
         {title}
       </Text>
-      <TouchableOpacity
-        onPress={() => props.navigation.navigate('Settings')}
-      >
-        <Text>Settings</Text>
-      </TouchableOpacity>
     </View>
   )
 }
 
-// const HomeComponent = createBottomTabNavigator({
-//   Chats: { screen: Chats },
-//   Status: { screen: TestScreen('Status') },
-//   Calls: { screen: TestScreen('Calls') }
-// })
-
 const AppStack = createStackNavigator({
   Home: {
-    screen: createMaterialTopTabNavigator({
+    screen: withCollapsibleForTab(createMaterialTopTabNavigator({
       Home: {
         screen: Chats,
         navigationOptions: ({ navigation }) => ({
@@ -67,7 +75,7 @@ const AppStack = createStackNavigator({
           title: 'Calls'
         })
       }
-    }),
+    }, tabNavigatorConfig), { iOSCollapsedColor: '#061' }),
     navigationOptions: ({ navigation }) => ({
       title: 'WhatsApp',
       headerRight: <Button title='=' onPress={() => navigation.navigate('Settings')} />
@@ -77,7 +85,7 @@ const AppStack = createStackNavigator({
   Settings: createStackNavigator({
     Settings: { screen: TestScreen('Settings') }
   })
-})
+}, navigatorConfig)
 
 // Auth Navigator
 const AuthStack = createStackNavigator({
