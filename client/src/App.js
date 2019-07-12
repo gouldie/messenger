@@ -13,8 +13,9 @@ import { onError } from 'apollo-link-error'
 import Navigator from './navigation'
 import AsyncStorage from '@react-native-community/async-storage'
 import { setContext } from 'apollo-link-context'
+import { StatusBar } from 'react-native'
 
-const URL = 'localhost:8080'
+const URL = '192.168.0.20:8080'
 
 function testReducer (state = {}, action) {
   switch (action.type) {
@@ -80,6 +81,10 @@ export default class App extends Component {
     return (
       <ApolloProvider client={client}>
         <Provider store={store}>
+          <StatusBar
+            backgroundColor="#fff"
+            barStyle="light-content"
+          />
           <Navigator />
         </Provider>
       </ApolloProvider>

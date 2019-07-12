@@ -78,7 +78,7 @@ const AppStack = createStackNavigator({
     }, tabNavigatorConfig), { iOSCollapsedColor: '#061' }),
     navigationOptions: ({ navigation }) => ({
       title: 'WhatsApp',
-      headerRight: <Button title='=' onPress={() => navigation.navigate('Settings')} />
+      headerRight: <Button color='#fff' title='=' onPress={() => navigation.navigate('Settings')} />
     })
   },
   Messages: { screen: Messages },
