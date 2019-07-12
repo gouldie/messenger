@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   Text,
   ActivityIndicator,
-  Animated
+  Animated,
+  ScrollView
 } from 'react-native'
 import ChatItem from '../components/chatItem'
 import AsyncStorage from '@react-native-community/async-storage'
@@ -16,6 +17,7 @@ import { SIGN_OUT, MY_CHATS } from '../graphql/user'
 import { withCollapsibleForTabChild } from 'react-navigation-collapsible'
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
+const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView)
 
 const styles = StyleSheet.create({
   container: {
@@ -70,14 +72,18 @@ class Chats extends Component {
         <ActivityIndicator />
       </View> 
       :
-      <AnimatedFlatList 
-        style={{flex: 1}}
-        data={fakeData()}
-        renderItem={this.renderItem}
-        keyExtractor={this.keyExtractor}
+      <AnimatedScrollView 
         onScroll={onScroll} 
         _mustAddThis={animatedY}
-      />
+      >
+      
+        <FlatList
+          style={{flex: 1}}
+          data={fakeData()}
+          renderItem={this.renderItem}
+          keyExtractor={this.keyExtractor}
+        />
+      </AnimatedScrollView>
     )
   }
 }

@@ -82,7 +82,7 @@ export default class App extends Component {
       <ApolloProvider client={client}>
         <Provider store={store}>
           <StatusBar
-            backgroundColor="#fff"
+            backgroundColor="#061"
             barStyle="light-content"
           />
           <Navigator />
