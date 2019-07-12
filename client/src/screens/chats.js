@@ -15,6 +15,8 @@ import AsyncStorage from '@react-native-community/async-storage'
 import { graphql, compose } from 'react-apollo'
 import { SIGN_OUT, MY_CHATS } from '../graphql/user'
 import { withCollapsibleForTabChild } from 'react-navigation-collapsible'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView)
@@ -75,8 +77,9 @@ class Chats extends Component {
       <AnimatedScrollView 
         onScroll={onScroll} 
         _mustAddThis={animatedY}
+        style={{ backgroundColor: 'blue', width: '100%', height: '100%' }}
       >
-      
+        <FontAwesomeIcon icon={ faPlusCircle } color='green' size={32} style={{ position: 'absolute', bottom: 20 }} />
         <FlatList
           style={{flex: 1}}
           data={fakeData()}

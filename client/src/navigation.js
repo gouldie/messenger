@@ -7,6 +7,7 @@ import Chats from './screens/chats'
 import Messages from './screens/messages'
 import AuthLoading from './screens/authLoading'
 import SignIn from './screens/signIn'
+import CreateChat from './screens/createChat'
 import { withCollapsibleForTab } from 'react-navigation-collapsible'
 
 const styles = StyleSheet.create({
@@ -83,6 +84,7 @@ const AppStack = createStackNavigator({
     })
   },
   Messages: { screen: Messages },
+  CreateChat: { screen: CreateChat },
   Settings: createStackNavigator({
     Settings: { screen: TestScreen('Settings') }
   })
