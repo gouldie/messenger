@@ -13,6 +13,7 @@ const User = gql`
 
   extend type Query {
     me: User @auth
+    users: [User!]! @auth
   }
 
   extend type Mutation {
