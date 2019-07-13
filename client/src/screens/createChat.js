@@ -15,6 +15,10 @@ const styles = {
 }
 
 class CreateChat extends Component {
+  static navigationOptions = {
+    title: 'Select users'
+  }
+
   render () {
     return (
       <View>

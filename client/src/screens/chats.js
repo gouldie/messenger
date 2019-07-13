@@ -13,7 +13,6 @@ import AsyncStorage from '@react-native-community/async-storage'
 import { graphql, compose } from 'react-apollo'
 import { SIGN_OUT, MY_CHATS } from '../graphql/user'
 import ActionButton from 'react-native-action-button'
-import Icon from 'react-native-vector-icons/Ionicons'
 
 const styles = StyleSheet.create({
   container: {
@@ -72,12 +71,12 @@ class Chats extends Component {
         <ScrollView style={{ width: '100%', height: '100%' }}>
           <FlatList
             style={{flex: 1}}
-            data={fakeData()}
+            data={me.chats}
             renderItem={this.renderItem}
             keyExtractor={this.keyExtractor}
           />
         </ScrollView>
-        <ActionButton buttonColor="green" onPress={() => console.log('asd')} />
+        <ActionButton buttonColor="green" onPress={() => this.props.navigation.navigate('CreateChat')} />
       </View>
       
     )

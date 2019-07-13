@@ -79,6 +79,7 @@ const AppStack = createStackNavigator({
     }, tabNavigatorConfig),
     navigationOptions: ({ navigation }) => ({
       title: 'WhatsApp',
+      headerBackTitle: null,
       headerRight: <Text style={{ color: 'white', fontSize: 30, paddingRight: 15 }}
         onPress={() => navigation.navigate('Settings')}>=</Text>
     })
