@@ -57,7 +57,7 @@ const TestScreen = title => (props) => {
 
 const AppStack = createStackNavigator({
   Home: {
-    screen: withCollapsibleForTab(createMaterialTopTabNavigator({
+    screen: createMaterialTopTabNavigator({
       Home: {
         screen: Chats,
         navigationOptions: ({ navigation }) => ({
@@ -76,7 +76,7 @@ const AppStack = createStackNavigator({
           title: 'Calls'
         })
       }
-    }, tabNavigatorConfig), { iOSCollapsedColor: '#061' }),
+    }, tabNavigatorConfig),
     navigationOptions: ({ navigation }) => ({
       title: 'WhatsApp',
       headerRight: <Text style={{ color: 'white', fontSize: 30, paddingRight: 15 }}

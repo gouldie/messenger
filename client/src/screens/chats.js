@@ -4,22 +4,16 @@ import {
   FlatList,
   StyleSheet,
   View,
-  TouchableOpacity,
   Text,
   ActivityIndicator,
-  Animated,
   ScrollView
 } from 'react-native'
 import ChatItem from '../components/chatItem'
 import AsyncStorage from '@react-native-community/async-storage'
 import { graphql, compose } from 'react-apollo'
 import { SIGN_OUT, MY_CHATS } from '../graphql/user'
-import { withCollapsibleForTabChild } from 'react-navigation-collapsible'
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
-
-const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
-const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView)
+import ActionButton from 'react-native-action-button'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 const styles = StyleSheet.create({
   container: {
@@ -66,7 +60,7 @@ class Chats extends Component {
   }
   
   render() {
-    const { data: { loading, me }, collapsible: { onScroll, animatedY } } = this.props
+    const { data: { loading, me } } = this.props
 
     return (
       loading ?
@@ -74,19 +68,18 @@ class Chats extends Component {
         <ActivityIndicator />
       </View> 
       :
-      <AnimatedScrollView 
-        onScroll={onScroll} 
-        _mustAddThis={animatedY}
-        style={{ backgroundColor: 'blue', width: '100%', height: '100%' }}
-      >
-        <FontAwesomeIcon icon={ faPlusCircle } color='green' size={32} style={{ position: 'absolute', bottom: 20 }} />
-        <FlatList
-          style={{flex: 1}}
-          data={fakeData()}
-          renderItem={this.renderItem}
-          keyExtractor={this.keyExtractor}
-        />
-      </AnimatedScrollView>
+      <View>
+        <ScrollView style={{ width: '100%', height: '100%' }}>
+          <FlatList
+            style={{flex: 1}}
+            data={fakeData()}
+            renderItem={this.renderItem}
+            keyExtractor={this.keyExtractor}
+          />
+        </ScrollView>
+        <ActionButton buttonColor="green" onPress={() => console.log('asd')} />
+      </View>
+      
     )
   }
 }
@@ -102,4 +95,4 @@ const myChats = graphql(MY_CHATS)
 export default compose(
   signOutQuery,
   myChats
-)(withCollapsibleForTabChild(Chats))
+)(Chats)
