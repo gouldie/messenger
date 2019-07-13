@@ -25,3 +25,12 @@ export const MY_CHATS = gql`
     }
   }
 `
+
+export const USERS = gql`
+  query {
+    users {
+      id
+      username
+    }
+  }
+`
