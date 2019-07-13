@@ -4,28 +4,51 @@ import {
   View,
   CheckBox,
   Text,
-  TouchableHighlight
+  TouchableOpacity
 } from 'react-native'
 import { USERS } from '../graphql/user'
 import { Query } from 'react-apollo'
+import randomcolor from 'randomcolor'
 
 const styles = {
-  container: {
-    alignItems: 'stretch',
-    backgroundColor: '#e5ddd5',
+  userItemContainer: {
     flex: 1,
+    flexDirection: 'row',
+    paddingHorizontal: 20, 
+    paddingVertical: 10,
+    alignItems: 'center'
+  },
+  userImageContainer: {
+    paddingRight: 15
+  },
+  userImage: {
+    width: 40, 
+    height: 40, 
+    backgroundColor: randomcolor(), 
+    borderRadius: 50
+  },
+  userInfoContainer: {
+    flex: 1, 
     flexDirection: 'column'
+  },
+  username: {
+    fontWeight: 'bold', 
+    marginBottom: 2
   }
 }
 
 const UserItem = ({ user: { id, username }, toggleUser }) => (
-  <TouchableHighlight key={id} onPress={() => toggleUser(id)}>
-    <View>
-      <Text>
-        {username}
-      </Text>
+  <TouchableOpacity key={id} onPress={() => toggleUser(id)} >
+    <View style={styles.userItemContainer}>
+      <View style={styles.userImageContainer}>
+        <View style={styles.userImage}></View>
+      </View>
+      <View style={styles.userInfoContainer}>
+        <Text style={styles.username}>{username}</Text>
+        <Text>example status</Text>
+      </View>
     </View>
-  </TouchableHighlight>
+  </TouchableOpacity>
 )
 
 class CreateChat extends Component {

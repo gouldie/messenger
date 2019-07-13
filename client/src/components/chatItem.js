@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {
-  TouchableHighlight,
+  TouchableOpacity,
   View,
   Text,
   StyleSheet
@@ -30,13 +30,13 @@ class ChatItem extends Component {
     const { id, title } = this.props.chat
 
     return (
-      <TouchableHighlight key={id} onPress={() => this.props.goToChat(this.props.chat)}>
+      <TouchableOpacity key={id} onPress={() => this.props.goToChat(this.props.chat)}>
         <View style={styles.chatContainer}>
           <Text style={styles.chatName}>
             {title}
           </Text>
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
     )
   }
 }
