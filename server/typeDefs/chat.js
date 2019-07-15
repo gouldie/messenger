@@ -16,7 +16,7 @@ const chat = gql`
   }
 
   extend type Mutation {
-    startChat(title: String, userIds: [ID!]!): ID @auth
+    startChat(title: String, userIds: [ID!]!): Chat @auth
   }
 `
 

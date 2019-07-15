@@ -28,7 +28,7 @@ export default {
 
       await User.updateMany({ _id: { $in: userIds } }, { $push: { chats: chat } })
 
-      return chat.id
+      return chat
     }
   },
   Chat: {

@@ -2,7 +2,14 @@ import gql from 'graphql-tag'
 
 export const START_CHAT = gql`
   mutation($title: String!, $userIds: [ID!]!) {
-    startChat(title: $title, userIds: $userIds)
+    startChat(title: $title, userIds: $userIds) {
+      id
+      title
+      users {
+        id
+        username
+      }
+    }
   }
 `
 

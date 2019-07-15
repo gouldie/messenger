@@ -14,23 +14,6 @@ export const SIGN_OUT = gql`
   }
 `
 
-export const MY_CHATS = gql`
-  query {
-    me {
-      id
-      chats {
-        id
-        title
-        createdAt
-        users {
-          id
-          username
-        }
-      }
-    }
-  }
-`
-
 export const USERS = gql`
   query {
     users {
