@@ -29,14 +29,11 @@ const styles = StyleSheet.create({
 class ChatItem extends Component {
   render () {
     const { id, title, users } = this.props.chat
-    const { userId } = this.props
-
-    const otherUser = users.find(u => u.id !== userId)
 
     return (
       <TouchableOpacity key={id} onPress={() => this.props.goToChat(this.props.chat)}>
         <View style={styles.chatContainer}>
-          <UserProfileImage user={otherUser} />
+          <UserProfileImage user={users[0]} />
           <Text style={styles.chatName}>
             {title}
           </Text>

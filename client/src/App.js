@@ -78,6 +78,7 @@ export const client = new ApolloClient({
 
 export default class App extends Component {
   render () {
+    console.log('render')
     return (
       <ApolloProvider client={client}>
         <Provider store={store}>

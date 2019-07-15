@@ -12,6 +12,7 @@ import randomcolor from 'randomcolor'
 import UserProfileImage from '../components/userProfileImage'
 import ActionButton from 'react-native-action-button'
 import { START_CHAT } from '../graphql/chat'
+import { MY_CHATS } from '../graphql/user'
 
 const styles = {
   container: {
@@ -121,7 +122,15 @@ class CreateChat extends Component {
               style={{flex: 1}}
               data={data.users}
             />
-            <Mutation mutation={START_CHAT} onCompleted={() => this.props.navigation.navigate('Home')}>
+            <Mutation 
+              mutation={START_CHAT} 
+              onCompleted={() => this.props.navigation.navigate('Home')}
+              update={(cache, { data: newChat }) => {
+                const { chats } = cache.readQuery({ query: MY_CHATS })
+                console.log('n', newChat)
+                console.log('c', cache)
+              }}
+            >
               {startChat => (
                 <ActionButton 
                   buttonColor="green" 

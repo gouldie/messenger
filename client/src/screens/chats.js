@@ -9,10 +9,9 @@ import {
   ScrollView
 } from 'react-native'
 import ChatItem from '../components/chatItem'
-import AsyncStorage from '@react-native-community/async-storage'
-import { graphql, compose } from 'react-apollo'
-import { SIGN_OUT, MY_CHATS } from '../graphql/user'
 import ActionButton from 'react-native-action-button'
+import { Query } from 'react-apollo'
+import { GET_CHATS } from '../graphql/chat'
 
 const styles = StyleSheet.create({
   container: {
@@ -38,7 +37,7 @@ class Chats extends Component {
     headerRight: <Text>=</Text>
   }
 
-  renderItem = ({ item }) => <ChatItem userId={this.props.data.me.id} chat={item} goToChat={this.goToChat} />
+  renderItem = ({ item }) => <ChatItem chat={item} goToChat={this.goToChat} />
   
   keyExtractor = item => item.id.toString()
 
@@ -46,53 +45,45 @@ class Chats extends Component {
     this.props.navigation.navigate('Messages', { chatId: chat.id, title: chat.name })
   }
 
-  signOut = () => {
-    this.props.signOut()
-      .then(async res => {
-        await AsyncStorage.removeItem('cookie')
-        this.props.navigation.navigate('AuthLoading')
-      })
-      .catch(async err => {
-        await AsyncStorage.removeItem('cookie')
-        this.props.navigation.navigate('AuthLoading')
-      })
-  }
+  // signOut = () => {
+  //   this.props.signOut()
+  //     .then(async res => {
+  //       await AsyncStorage.removeItem('cookie')
+  //       this.props.navigation.navigate('AuthLoading')
+  //     })
+  //     .catch(async err => {
+  //       await AsyncStorage.removeItem('cookie')
+  //       this.props.navigation.navigate('AuthLoading')
+  //     })
+  // }
   
   render() {
-    const { data: { loading, me } } = this.props // TODO: check for error
-    console.log('me', me)
-
     return (
-      loading ?
-      <View style={styles.loaderContainer}>
-        <ActivityIndicator />
-      </View> 
-      :
-      <View>
-        <ScrollView style={{ width: '100%', height: '100%' }}>
-          <FlatList
-            style={{flex: 1}}
-            data={me.chats}
-            renderItem={this.renderItem}
-            keyExtractor={this.keyExtractor}
-          />
-        </ScrollView>
-        <ActionButton buttonColor="green" onPress={() => this.props.navigation.navigate('CreateChat')} />
-      </View>
-      
+      <Query query={GET_CHATS}>
+        {({ loading, error, data }) => {
+          if (error) return <Text>error</Text>
+          if (loading) return (
+            <View style={styles.loaderContainer}>
+              <ActivityIndicator />
+            </View>
+          )
+          return (
+            <View>
+              <ScrollView style={{ width: '100%', height: '100%' }}>
+                <FlatList
+                  style={{flex: 1}}
+                  data={data.chats}
+                  renderItem={this.renderItem}
+                  keyExtractor={this.keyExtractor}
+                />
+              </ScrollView>
+              <ActionButton buttonColor="green" onPress={() => this.props.navigation.navigate('CreateChat')} />
+            </View>
+          )
+        }}
+      </Query>
     )
   }
 }
 
-const signOutQuery = graphql(SIGN_OUT, {
-  props: ({ ownProps, mutate }) => ({
-    signOut: () => mutate()
-  })
-})
-
-const myChats = graphql(MY_CHATS)
-
-export default compose(
-  signOutQuery,
-  myChats
-)(Chats)
+export default Chats

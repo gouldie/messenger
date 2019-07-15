@@ -5,3 +5,16 @@ export const START_CHAT = gql`
     startChat(title: $title, userIds: $userIds)
   }
 `
+
+export const GET_CHATS = gql`
+  query {
+    chats {
+      id
+      title
+      users {
+        id
+        username
+      }
+    }
+  }  
+`

@@ -11,6 +11,10 @@ const chat = gql`
     updatedAt: String!
   }
 
+  extend type Query {
+    chats: [Chat!]!
+  }
+
   extend type Mutation {
     startChat(title: String, userIds: [ID!]!): ID @auth
   }
