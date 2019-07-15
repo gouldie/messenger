@@ -8,7 +8,6 @@ import {
   StyleSheet
 } from 'react-native'
 import UserProfileImage from './userProfileImage'
-import console = require('console');
 
 const styles = StyleSheet.create({
   chatContainer: {

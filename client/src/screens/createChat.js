@@ -108,7 +108,7 @@ class CreateChat extends Component {
               <View style={styles.selectedContainer}>
                 {
                   selected.map((e, i) => 
-                    <UserProfileImage key={i} user={e} />
+                    <UserProfileImage key={i} user={e} onPress={() => this.toggleUser(e)} />
                   )
                 }
               </View>
