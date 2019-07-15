@@ -9,8 +9,22 @@ import {
 import { USERS } from '../graphql/user'
 import { Query } from 'react-apollo'
 import randomcolor from 'randomcolor'
+import UserProfileImage from '../components/userProfileImage'
 
 const styles = {
+  container: {
+    height: '100%',
+    flex: 1
+  },
+  selectedContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
+    paddingHorizontal: 20,
+    paddingVertical: 10
+  },
   userItemContainer: {
     flex: 1,
     flexDirection: 'row',
@@ -24,7 +38,6 @@ const styles = {
   userImage: {
     width: 40, 
     height: 40, 
-    backgroundColor: randomcolor(), 
     borderRadius: 50
   },
   userInfoContainer: {
@@ -37,14 +50,12 @@ const styles = {
   }
 }
 
-const UserItem = ({ user: { id, username }, toggleUser }) => (
-  <TouchableOpacity key={id} onPress={() => toggleUser(id)} >
+const UserItem = ({ user, toggleUser }) => (
+  <TouchableOpacity key={user.id} onPress={() => toggleUser(user)} >
     <View style={styles.userItemContainer}>
-      <View style={styles.userImageContainer}>
-        <View style={styles.userImage}></View>
-      </View>
+      <UserProfileImage user={user} />
       <View style={styles.userInfoContainer}>
-        <Text style={styles.username}>{username}</Text>
+        <Text style={styles.username}>{user.username}</Text>
         <Text>example status</Text>
       </View>
     </View>
@@ -68,11 +79,22 @@ class CreateChat extends Component {
   
   keyExtractor = item => item.id.toString()
 
-  toggleUser = (id) => {
-    console.log('toggle', id)
+  toggleUser = (user) => {
+    const newSelected = this.state.selected
+
+    if (!newSelected.find(e => user.id === e.id)) {
+      newSelected.push(user)
+    } else {
+      const index = newSelected.indexOf(newSelected.find(e => user.id === e.id))
+      newSelected.splice(index, 1)
+    }
+
+    this.setState({ selected: newSelected })
   }
 
   render () {
+    const { selected } = this.state
+
     return (
     <Query query={USERS}>
       {({ loading, error, data }) => {
@@ -80,12 +102,25 @@ class CreateChat extends Component {
         if (loading || !data) return <Text>loading</Text>
 
         return (
-          <FlatList 
-            renderItem={this.renderItem}
-            keyExtractor={this.keyExtractor}
-            style={{flex: 1}}
-            data={data.users}
-          />
+          <View style={styles.container}>
+            {
+              selected.length > 0 &&
+              <View style={styles.selectedContainer}>
+                {
+                  selected.map((e, i) => 
+                    <UserProfileImage key={i} user={e} />
+                  )
+                }
+              </View>
+            }
+            <FlatList
+              renderItem={this.renderItem}
+              keyExtractor={this.keyExtractor}
+              style={{flex: 1}}
+              data={data.users}
+            />
+          </View>
+          
         )
       }}
     </Query>
