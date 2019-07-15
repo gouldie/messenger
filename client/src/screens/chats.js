@@ -38,7 +38,7 @@ class Chats extends Component {
     headerRight: <Text>=</Text>
   }
 
-  renderItem = ({ item }) => <ChatItem chat={item} goToChat={this.goToChat} />
+  renderItem = ({ item }) => <ChatItem userId={this.props.data.me.id} chat={item} goToChat={this.goToChat} />
   
   keyExtractor = item => item.id.toString()
 
@@ -59,7 +59,7 @@ class Chats extends Component {
   }
   
   render() {
-    const { data: { loading, me } } = this.props
+    const { data: { loading, me } } = this.props // TODO: check for error
 
     return (
       loading ?

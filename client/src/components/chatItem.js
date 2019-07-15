@@ -7,6 +7,8 @@ import {
   Text,
   StyleSheet
 } from 'react-native'
+import UserProfileImage from './userProfileImage'
+import console = require('console');
 
 const styles = StyleSheet.create({
   chatContainer: {
@@ -27,11 +29,15 @@ const styles = StyleSheet.create({
 
 class ChatItem extends Component {
   render () {
-    const { id, title } = this.props.chat
+    const { id, title, users } = this.props.chat
+    const { userId } = this.props
+
+    const otherUser = users.find(u => u.id !== userId)
 
     return (
       <TouchableOpacity key={id} onPress={() => this.props.goToChat(this.props.chat)}>
         <View style={styles.chatContainer}>
+          <UserProfileImage user={otherUser} />
           <Text style={styles.chatName}>
             {title}
           </Text>

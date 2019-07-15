@@ -2,6 +2,7 @@ import { User, Chat } from '../models'
 import Joi from 'joi'
 import { startChat } from '../schema'
 import { UserInputError } from 'apollo-server-express'
+import { isAuth } from '../auth'
 
 export default {
   Mutation: {
@@ -25,6 +26,15 @@ export default {
       await User.updateMany({ _id: { $in: userIds } }, { $push: { chats: chat } })
 
       return chat.id
+    }
+  },
+  Chat: {
+    users: async (chat, args, { req }, info) => {
+      if (true) { // TODO: validation. ensure req.user is a member of the chat object
+        return (await chat.populate('users').execPopulate()).users
+      }
+
+      return []
     }
   }
 }
