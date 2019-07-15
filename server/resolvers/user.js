@@ -8,8 +8,8 @@ export default {
     me: (root, args, { req }, info) => {
       return User.findById(req.session.userId)
     },
-    users: (root, args, context, info) => {
-      return User.find().select('username')
+    users: (root, args, { req }, info) => {
+      return User.find({ _id: { $ne: req.session.userId } }).select('username')
     }
   },
   Mutation: {

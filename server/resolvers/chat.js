@@ -11,7 +11,6 @@ export default {
       const { title, userIds } = args
 
       await Joi.validate(args, startChat(userId), { abortEarly: false })
-      console.log('aft')
 
       const idsFound = await User.where('_id').in(userIds).countDocuments()
 

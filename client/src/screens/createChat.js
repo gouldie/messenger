@@ -7,9 +7,11 @@ import {
   TouchableOpacity
 } from 'react-native'
 import { USERS } from '../graphql/user'
-import { Query } from 'react-apollo'
+import { Query, Mutation } from 'react-apollo'
 import randomcolor from 'randomcolor'
 import UserProfileImage from '../components/userProfileImage'
+import ActionButton from 'react-native-action-button'
+import { START_CHAT } from '../graphql/chat'
 
 const styles = {
   container: {
@@ -119,6 +121,14 @@ class CreateChat extends Component {
               style={{flex: 1}}
               data={data.users}
             />
+            <Mutation mutation={START_CHAT}>
+              {startChat => (
+                <ActionButton 
+                  buttonColor="green" 
+                  onPress={() => startChat({ variables: { title: 'testtitle', userIds: selected.map(e => e.id) } })} 
+                />
+              )}
+            </Mutation>
           </View>
           
         )

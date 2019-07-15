@@ -60,6 +60,7 @@ class Chats extends Component {
   
   render() {
     const { data: { loading, me } } = this.props // TODO: check for error
+    console.log('me', me)
 
     return (
       loading ?
