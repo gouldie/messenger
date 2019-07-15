@@ -121,7 +121,7 @@ class CreateChat extends Component {
               style={{flex: 1}}
               data={data.users}
             />
-            <Mutation mutation={START_CHAT}>
+            <Mutation mutation={START_CHAT} onCompleted={() => this.props.navigation.navigate('Home')}>
               {startChat => (
                 <ActionButton 
                   buttonColor="green" 
