@@ -8,6 +8,14 @@ const message = gql`
     createdAt: String!
     updatedAt: String!
   }
+
+  extend type Query {
+    messages(chatId: ID!): [Message!]!
+  }
+
+  extend type Mutation {
+    sendMessage(body: String!, chatId: ID!): Message @auth
+  }
 `
 
 export default message
