@@ -42,32 +42,31 @@ const styles = StyleSheet.create({
 
 class Message extends PureComponent {
   render () {
-    const { color, message, isCurrentUser } = this.props
+    const { message } = this.props
 
     return (
       <View key={message.id} style={styles.container}>
-        {isCurrentUser ? <View style={styles.messageSpacer} /> : undefined }
-        <View style={[styles.message, isCurrentUser && styles.myMessage]}>
-          <Text style={[styles.messageUsername, { color }]}>
+        {message.isCurrentUser ? <View style={styles.messageSpacer} /> : undefined }
+        <View style={[styles.message, message.isCurrentUser && styles.myMessage]}>
+          <Text style={[styles.messageUsername, { color: 'green' }]}>
             {message.from}
           </Text>
-          <Text>{message.text}</Text>
-          <Text>{moment(message.createdAt).format('h:mm A')}</Text>
+          <Text>{message.body}</Text>
+          <Text>{moment(Number(message.createdAt)).format('h:mm A')}</Text>
         </View>
-        {!isCurrentUser ? <View style={styles.messageSpacer} /> : undefined }
+        {!message.isCurrentUser ? <View style={styles.messageSpacer} /> : undefined }
       </View>
     )
   }
 }
 
 Message.propTypes = {
-  color: PropTypes.string.isRequired,
   message: PropTypes.shape({
     createdAt: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired,
-    from: PropTypes.string.isRequired
-  }),
-  isCurrentUser: PropTypes.bool.isRequired
+    body: PropTypes.string.isRequired,
+    sender: PropTypes.string.isRequired,
+    isCurrentUser: PropTypes.bool.isRequired
+  })
 }
 
 export default Message

@@ -7,6 +7,7 @@ const message = gql`
     body: String!,
     createdAt: String!
     updatedAt: String!
+    isCurrentUser: Boolean
   }
 
   extend type Query {

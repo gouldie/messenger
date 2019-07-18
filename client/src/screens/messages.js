@@ -2,10 +2,14 @@ import React, { Component } from 'react'
 import { _ } from 'lodash'
 import {
   FlatList,
-  View
+  View,
+  ActivityIndicator,
+  Text
 } from 'react-native'
 import randomColor from 'randomcolor'
 import Message from '../components/message'
+import { Query } from 'react-apollo'
+import { GET_MESSAGES } from '../graphql/message'
 
 const styles = {
   container: {
@@ -32,25 +36,35 @@ class Messages extends Component {
     title: 'Messages'
   }
 
-  keyExtractor = item => item.message.id.toString()
+  keyExtractor = message => message.id.toString()
 
-  renderItem = ({ item: { isCurrentUser, message, color } }) => (
+  renderItem = ({ item }) => (
     <Message
-      color={color}
-      message={message}
-      isCurrentUser={isCurrentUser}
+      message={item}
     />
   )
 
   render() {
     return (
-      <View style={styles.container}>
-        <FlatList 
-          data={fakeData()}
-          keyExtractor={this.keyExtractor}
-          renderItem={this.renderItem}
-        />
-      </View>
+      <Query query={GET_MESSAGES} variables={{ chatId: this.props.navigation.state.params.chatId }}>
+        {({ loading, error, data }) => {
+          if (error) return <Text>error</Text>
+          if (loading) return (
+            <View style={styles.loaderContainer}>
+              <ActivityIndicator />
+            </View>
+          )
+          return (
+            <View style={styles.container}>
+              <FlatList 
+                data={data.messages}
+                keyExtractor={this.keyExtractor}
+                renderItem={this.renderItem}
+              />
+            </View>
+          )
+        }}
+      </Query>
     )
   }
 }

@@ -5,12 +5,18 @@ import { UserInputError } from 'apollo-server-express'
 
 export default {
   Query: {
-    messages: (root, args, { req }, info) => {
+    messages: async (root, args, { req }, info) => {
+      const { userId } = req.session
       // joi validation
       // access validation
       // sorting by date
 
-      return Message.find({ chat: args.chatId })
+      const messages = (await Message.find({ chat: args.chatId }).exec()).map(m => {
+        m.isCurrentUser = m.sender.toString() === userId
+        return m
+      })
+
+      return messages
     }
   },
   Mutation: {
@@ -18,11 +24,10 @@ export default {
       const { userId } = req.session
       const { body, chatId } = args
 
-      console.log('1')
       // join validation
       // access validation
 
-      const message = await Message.create({ body, chat: chatId })
+      const message = await Message.create({ body, chat: chatId, sender: userId })
 
       return message
     }
