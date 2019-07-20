@@ -4,19 +4,50 @@ import {
   FlatList,
   View,
   ActivityIndicator,
-  Text
+  Text,
+  TextInput,
+  KeyboardAvoidingView,
+  TouchableOpacity
 } from 'react-native'
 import randomColor from 'randomcolor'
 import Message from '../components/message'
 import { Query } from 'react-apollo'
 import { GET_MESSAGES } from '../graphql/message'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faStepForward } from '@fortawesome/free-solid-svg-icons'
 
 const styles = {
   container: {
-    alignItems: 'stretch',
     backgroundColor: '#e5ddd5',
     flex: 1,
-    flexDirection: 'column'
+    flexDirection: 'column',
+    alignItems: 'stretch'
+  },
+  messageContainer: {
+    display: 'flex', 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    flexDirection: 'row', 
+    padding: 8
+  },
+  textInput: {
+    height: 40, 
+    backgroundColor: 'white',
+    borderColor: 'gray', 
+    borderWidth: 1,
+    borderRadius: 50,
+    width: '80%',
+    paddingLeft: 15
+  },
+  sendButton: {
+    display: 'flex', 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    width: 35, 
+    height: 35,
+    backgroundColor: 'green', 
+    borderRadius: 50, 
+    marginLeft: 5
   }
 }
 
@@ -61,6 +92,12 @@ class Messages extends Component {
                 keyExtractor={this.keyExtractor}
                 renderItem={this.renderItem}
               />
+              <View style={styles.messageContainer}>
+                <TextInput style={styles.textInput} />
+                <TouchableOpacity style={styles.sendButton}>
+                  <FontAwesomeIcon icon={ faStepForward } color='white' />
+                </TouchableOpacity>
+              </View>
             </View>
           )
         }}
