@@ -11,8 +11,8 @@ import {
 } from 'react-native'
 import randomColor from 'randomcolor'
 import Message from '../components/message'
-import { Query } from 'react-apollo'
-import { GET_MESSAGES } from '../graphql/message'
+import { Query, Mutation } from 'react-apollo'
+import { GET_MESSAGES, SEND_MESSAGE } from '../graphql/message'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faStepForward } from '@fortawesome/free-solid-svg-icons'
 
@@ -63,6 +63,14 @@ const fakeData = () => _.times(5, i => ({
 }))
 
 class Messages extends Component {
+  constructor() {
+    super()
+
+    this.state = {
+      message: null
+    }
+  }
+
   static navigationOptions = {
     title: 'Messages'
   }
@@ -75,9 +83,20 @@ class Messages extends Component {
     />
   )
 
+  onChangeMessage = (e) => {
+    this.setState({ message: e })
+  }
+
+  clearMessage = () => {
+    this.setState({ message: null })
+  }
+
   render() {
+    const { message } = this.state
+    const { chatId } = this.props.navigation.state.params
+
     return (
-      <Query query={GET_MESSAGES} variables={{ chatId: this.props.navigation.state.params.chatId }}>
+      <Query query={GET_MESSAGES} variables={{ chatId }}>
         {({ loading, error, data }) => {
           if (error) return <Text>error</Text>
           if (loading) return (
@@ -88,15 +107,24 @@ class Messages extends Component {
           return (
             <View style={styles.container}>
               <FlatList 
-                data={data.messages}
+                data={data.messages.reverse()}
                 keyExtractor={this.keyExtractor}
                 renderItem={this.renderItem}
+                inverted={-1}
               />
               <View style={styles.messageContainer}>
-                <TextInput style={styles.textInput} />
-                <TouchableOpacity style={styles.sendButton}>
-                  <FontAwesomeIcon icon={ faStepForward } color='white' />
-                </TouchableOpacity>
+                <TextInput style={styles.textInput} onChangeText={this.onChangeMessage} value={message} />
+                <Mutation mutation={SEND_MESSAGE} onCompleted={this.clearMessage}>
+                  {
+                    sendMessage => (
+                      <TouchableOpacity 
+                        style={styles.sendButton} 
+                        onPress={() => sendMessage({ variables: { body: message, chatId } })}>
+                        <FontAwesomeIcon icon={ faStepForward } color='white' />
+                      </TouchableOpacity>
+                    )
+                  }
+                </Mutation>
               </View>
             </View>
           )

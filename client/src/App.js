@@ -15,7 +15,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 import { setContext } from 'apollo-link-context'
 import { StatusBar } from 'react-native'
 
-const URL = '192.168.0.20:8080'
+const URL = '192.168.0.33:8080'
 
 function testReducer (state = {}, action) {
   switch (action.type) {

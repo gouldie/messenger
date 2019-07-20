@@ -58,7 +58,6 @@ class SignIn extends Component {
   }
 
   login = () => {
-    console.log('test')
     this.props.mutate({
       variables: { username: this.state.username, password: this.state.password }
     })
