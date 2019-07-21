@@ -17,6 +17,10 @@ const message = gql`
   extend type Mutation {
     sendMessage(body: String!, chatId: ID!): Message @auth
   }
+
+  extend type Subscription {
+    messageSent(chatId: ID!): Message
+  }
 `
 
 export default message

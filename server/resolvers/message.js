@@ -2,6 +2,7 @@ import { User, Message } from '../models'
 import Joi from 'joi'
 import { startChat } from '../schema'
 import { UserInputError } from 'apollo-server-express'
+import { pubsub } from '../index'
 
 export default {
   Query: {
@@ -29,7 +30,22 @@ export default {
 
       const message = await Message.create({ body, chat: chatId, sender: userId })
 
+      const payload = {
+        messageSent: {
+          body,
+          chat: chatId,
+          sender: userId
+        }
+      }
+
+      pubsub.publish('messageSent', payload)
+
       return message
+    }
+  },
+  Subscription: {
+    messageSent: {
+      subscribe: () => pubsub.asyncIterator('messageSent')
     }
   }
 }

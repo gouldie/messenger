@@ -5,6 +5,10 @@ import session from 'express-session'
 import typeDefs from './typeDefs'
 import resolvers from './resolvers'
 import schemaDirectives from './directives'
+import { PubSub } from 'graphql-subscriptions'
+import http from 'http'
+
+export const pubsub = new PubSub()
 
 require('dotenv').config()
 
@@ -54,10 +58,14 @@ const MongoStore = require('connect-mongo')(session);
       context: ({ req, res }) => ({ req, res })
     })
 
+    const httpServer = http.createServer(app)
+    server.installSubscriptionHandlers(httpServer)
+
     server.applyMiddleware({ app, cors: true })
 
-    app.listen({ port: process.env.PORT || 8080 }, () => {
-      console.log(`Server listening at port ${process.env.PORT || 8080}`)
+    httpServer.listen(process.env.PORT || 8080, () => {
+      console.log(`🚀 Server ready at http://localhost:${process.env.PORT || 8080}${server.graphqlPath}`)
+      console.log(`🚀 Subscriptions ready at ws://localhost:${process.env.PORT || 8080}${server.subscriptionsPath}`)
     })
   } catch (e) {
     console.log(e)
