@@ -6,7 +6,7 @@ import typeDefs from './typeDefs'
 import resolvers from './resolvers'
 import schemaDirectives from './directives'
 import { PubSub } from 'graphql-subscriptions'
-import http from 'http'
+import { createServer } from 'http'
 
 export const pubsub = new PubSub()
 
@@ -58,7 +58,7 @@ const MongoStore = require('connect-mongo')(session);
       context: ({ req, res }) => ({ req, res })
     })
 
-    const httpServer = http.createServer(app)
+    const httpServer = createServer(app)
     server.installSubscriptionHandlers(httpServer)
 
     server.applyMiddleware({ app, cors: true })

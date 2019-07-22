@@ -19,7 +19,7 @@ const message = gql`
   }
 
   extend type Subscription {
-    messageSent(chatId: ID!): Message
+    messageSent(test: String!): Message
   }
 `
 

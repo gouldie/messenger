@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
 import React, { Component } from 'react'
 import { ApolloClient } from 'apollo-client'
-import { ApolloLink } from 'apollo-link'
+import { ApolloLink, split } from 'apollo-link'
 import { ApolloProvider } from 'react-apollo'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { createHttpLink } from 'apollo-link-http'
+import { WebSocketLink } from 'apollo-link-ws'
 import { createStore, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
 import { InMemoryCache } from 'apollo-cache-inmemory'
@@ -14,8 +15,9 @@ import Navigator from './navigation'
 import AsyncStorage from '@react-native-community/async-storage'
 import { setContext } from 'apollo-link-context'
 import { StatusBar } from 'react-native'
+import { getMainDefinition } from 'apollo-utilities'
 
-const URL = '192.168.0.33:8080'
+const URL = '192.168.0.20:8080'
 
 function testReducer (state = {}, action) {
   switch (action.type) {
@@ -63,12 +65,25 @@ const errorLink = onError(errors => {
   console.log(errors)
 })
 const httpLink = createHttpLink({ uri: `http://${URL}/graphql` })
+const wsLink = new WebSocketLink({ uri: `ws://${URL}/graphql`, options: { reconnect: true } })
+
+const terminatingLink = split(
+  ({ query }) => {
+    const { kind, operation } = getMainDefinition(query)
+    return (
+      kind === 'OperationDefinition' && operation === 'subscription'
+    )
+  },
+  wsLink,
+  httpLink
+)
+
 const link = ApolloLink.from([
   asyncAuthLink,
   reduxLink,
   errorLink,
   afterwareLink,
-  httpLink
+  terminatingLink
 ])
 
 export const client = new ApolloClient({

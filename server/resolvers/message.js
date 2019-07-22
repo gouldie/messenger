@@ -32,6 +32,7 @@ export default {
 
       const payload = {
         messageSent: {
+          id: message.id,
           body,
           chat: chatId,
           sender: userId
