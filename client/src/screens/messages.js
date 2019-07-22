@@ -15,6 +15,7 @@ import { Query, Mutation } from 'react-apollo'
 import { GET_MESSAGES, SEND_MESSAGE } from '../graphql/message'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faStepForward } from '@fortawesome/free-solid-svg-icons'
+import MessageList from '../components/messageList'
 
 const styles = {
   container: {
@@ -97,7 +98,7 @@ class Messages extends Component {
 
     return (
       <Query query={GET_MESSAGES} variables={{ chatId }}>
-        {({ loading, error, data }) => {
+        {({ loading, error, data, subscribeToMore }) => {
           if (error) return <Text>error</Text>
           if (loading) return (
             <View style={styles.loaderContainer}>
@@ -106,11 +107,11 @@ class Messages extends Component {
           )
           return (
             <View style={styles.container}>
-              <FlatList 
-                data={data.messages.reverse()}
+              <MessageList 
+                data={data}
                 keyExtractor={this.keyExtractor}
                 renderItem={this.renderItem}
-                inverted={-1}
+                subscribeToMore={subscribeToMore}
               />
               <View style={styles.messageContainer}>
                 <TextInput style={styles.textInput} onChangeText={this.onChangeMessage} value={message} />

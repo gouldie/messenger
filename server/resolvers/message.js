@@ -35,7 +35,9 @@ export default {
           id: message.id,
           body,
           chat: chatId,
-          sender: userId
+          sender: userId,
+          createdAt: message.createdAt,
+          isCurrentUser: true
         }
       }
 

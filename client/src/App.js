@@ -4,7 +4,7 @@ import { ApolloClient } from 'apollo-client'
 import { ApolloLink, split } from 'apollo-link'
 import { ApolloProvider } from 'react-apollo'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import { createHttpLink } from 'apollo-link-http'
+import { HttpLink } from 'apollo-link-http'
 import { WebSocketLink } from 'apollo-link-ws'
 import { createStore, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
@@ -46,8 +46,9 @@ const asyncAuthLink = setContext(async request => {
   }
 })
 
-const afterwareLink = new ApolloLink((operation, forward) =>
-  forward(operation).map(response => {
+const afterwareLink = new ApolloLink((operation, forward) => {
+  if (!(forward(operation).map)) return forward(operation)
+  return forward(operation).map(response => {
     const context = operation.getContext()
     const { response: { headers } } = context
 
@@ -58,13 +59,13 @@ const afterwareLink = new ApolloLink((operation, forward) =>
     }
     return response
   })
-)
+})
 
 const reduxLink = new ReduxLink(store)
 const errorLink = onError(errors => {
   console.log(errors)
 })
-const httpLink = createHttpLink({ uri: `http://${URL}/graphql` })
+const httpLink = new HttpLink({ uri: `http://${URL}/graphql` })
 const wsLink = new WebSocketLink({ uri: `ws://${URL}/graphql`, options: { reconnect: true } })
 
 const terminatingLink = split(

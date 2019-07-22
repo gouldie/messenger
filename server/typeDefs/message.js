@@ -19,7 +19,7 @@ const message = gql`
   }
 
   extend type Subscription {
-    messageSent(test: String!): Message
+    messageSent: Message
   }
 `
 

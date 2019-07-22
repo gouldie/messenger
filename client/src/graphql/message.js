@@ -19,3 +19,15 @@ export const SEND_MESSAGE = gql`
     }
   }  
 `
+
+export const MESSAGE_SENT = gql`
+  subscription messageSent {
+    messageSent {
+      id
+      body
+      sender
+      createdAt
+      isCurrentUser
+    }
+  }
+`
